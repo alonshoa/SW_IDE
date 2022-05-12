@@ -6,14 +6,17 @@ from idlelib import colorizer as ic, percolator as ip
 from tkinter import ttk as ttk
 
 import openai
+from utils.mylogger import MyLogger
 
-from devince_codex_1.utils.git_functionality import init_git,pull_from_git,open_gitgub_descktop
-
+from utils.git_functionality import init_git,pull_from_git,open_gitgub_descktop
+logger = MyLogger()
 
 def send_to_openai(app):
     instructions = app.instructions_text.get("1.0", "end-1c")
     code = app.code_text.get("1.0", "end-1c")
+    logger.log_info(['the instructions and the code',instructions,code])
     response = get_response(instructions, code)
+    logger.log_info(f'the response - {response}')
     app.output_code_textbox.config(state="normal")
     app.output_code_textbox.delete("1.0", "end")
     app.output_code_textbox.insert("1.0", response["choices"][0]["text"])

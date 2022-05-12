@@ -2,10 +2,14 @@ import tkinter as tk
 import os
 import openai
 
-from devince_codex_1.utils.app import Application
+from utils.app import Application
 
 openai.api_key = os.getenv("OPENAI_KEY")
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+def main():
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()
+
+if __name__ == "__main__":
+    main()
