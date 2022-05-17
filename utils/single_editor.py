@@ -1,3 +1,29 @@
+# import tkinter as tk
+# from tkinter import ttk
+#
+#
+#
+#
+# class SingleEditor(tk.Frame):
+#     def __init__(self, master=None):
+#         super().__init__(master)
+#         self.pw = ttk.PanedWindow(orient=tk.HORIZONTAL)
+#         # self.pw.pack(fill=tk.BOTH, expand=1)
+#         self.pw.grid(row=0,column=0)
+#         self.input_code = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD)
+#         self.output_code = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD)
+#         self.instruction = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD)
+#         self.pw.add(self.instruction)
+#         self.pw.add(self.input_code)
+#         self.pw.add(self.output_code)
+#
+#
+# if __name__ == '__main__':
+#     root = tk.Tk()
+#     app = SingleEditor(master=root)
+#     app.mainloop()
+
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -5,13 +31,16 @@ from tkinter import ttk
 class SingleEditor(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
-        self.instruction = tk.Text(self, height=10, width=50, wrap=tk.WORD)
+        self.instruction = tk.Text(self, height=10, width=100, wrap=tk.WORD)
+        self.pw = ttk.PanedWindow(orient=tk.HORIZONTAL,)
+        # self.instruction.pack()
         self.instruction.grid(row=0, column=0, columnspan=2)
-        self.pw = ttk.PanedWindow(self, orient=tk.HORIZONTAL)
-        self.pw.grid(row=1, column=0, columnspan=2)
-        self.input_code = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD, state=tk.DISABLED)
-        self.output_code = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD, state=tk.DISABLED)
-        self.pw.add(self.output_code)
+        self.pw.grid(row=2, column=0, columnspan=2)
+        self.input_code = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD)
+        self.output_code = tk.Text(self.pw, height=10, width=50, wrap=tk.WORD)
+        # self.pw.add(self.output_code)
+        self.wrap(None)
+        # self.pw.pack()
         self.input_code.bind('<Key>', self.key_pressed)
         self.input_code.bind('<Button-1>', self.mouse_pressed)
         self.input_code.bind('<ButtonRelease-1>', self.mouse_released)
