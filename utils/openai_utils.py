@@ -2,9 +2,21 @@ import openai
 import os
 import tkinter as tk
 
-from devince_codex_1.SW_IDE.utils.button_functionality import logger, get_response
+# from .button_functionality import  get_response
+from .mylogger import MyLogger
 
 openai.api_key = os.getenv("OPENAI_KEY")
+logger = MyLogger()
+
+def get_response(instruction, code):
+    response = openai.Edit.create(
+        engine="code-davinci-edit-001",
+        input=code,
+        instruction=instruction,
+        temperature=0,
+        top_p=1
+    )
+    return response
 
 
 def get_list_of_models():

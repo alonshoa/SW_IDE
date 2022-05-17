@@ -1,5 +1,5 @@
 .vscode
 extention_code
 .idea
-log.txt
+log*.txt*
 /**/__pycache__/*

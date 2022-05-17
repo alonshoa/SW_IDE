@@ -1,5 +1,6 @@
 import os
 import re
+import tkinter
 import tkinter as tk
 from idlelib import colorizer as ic, percolator as ip
 from tkinter import ttk as ttk
@@ -11,7 +12,8 @@ import openai
 from .mylogger import MyLogger
 
 from .git_functionality import init_git,pull_from_git,open_gitgub_descktop
-logger = MyLogger()
+from .openai_utils import get_list_of_models_for_edit
+
 
 
 def save_result(app):
@@ -138,12 +140,18 @@ def create_slide_menu(app):
     app.git_menu.add_command(label="Init Git", command=lambda: init_git(os.getcwd()))
 
 
-def get_response(instruction, code):
-    response = openai.Edit.create(
-        engine="code-davinci-edit-001",
-        input=code,
-        instruction=instruction,
-        temperature=0,
-        top_p=1
-    )
-    return response
+
+
+def generate_drop_down_list(root):
+    models = get_list_of_models_for_edit()
+    variable = tk.StringVar(root)
+    variable.set(models[0])
+
+    w = tk.OptionMenu(root, variable, *models)
+    root.dropdown_list = w
+    return root
+
+
+def move_output_to_input(app):
+    app.code_text.delete(1.0, tk.END)
+    app.code_text.insert(tk.END, app.output_code_textbox.get(1.0, tk.END))
