@@ -2,8 +2,9 @@ import tkinter as tk
 import tkinter.filedialog
 
 from .button_functionality import create_slide_menu, save_result, \
-    create_file_explorer, highlight_code, generate_drop_down_list
-
+     move_output_to_input, generate_drop_down_list,  highlight_code,   create_file_explorer
+# from .maybe_working_button_functionality import highlight_code
+from .file_explorer import FileExplorer
 from .button_functionality import beyond_compare as compare_code
 from .buttons_panel import ButtonsPanel
 from .jupyter_notebook_utils import save_output_to_ipynb_notebook  # gets name and code
@@ -16,7 +17,7 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.pack()
-        self.file_explorer = None
+        self.file_explorer = FileExplorer(self)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
         self.grid_columnconfigure(3, weight=1)
@@ -25,15 +26,15 @@ class Application(tk.Frame):
         self.create_widgets()
         create_slide_menu(self)
         generate_drop_down_list(self)
-        self.dropdown_list.grid(row=2, column=0)
+        self.dropdown_list.grid(row=0, column=0)
         self.bind('<Shift-Return>', self.submit)
         self.undo = Undo()
-        create_file_explorer(self)
+        self.file_explorer.create_file_explorer()
         highlight_code(self)
+        # self.code_text.bind("<KeyRelease>", lambda event: highlight_code(self))
 
     def update_file_explorer(self, event):
-        self.file_explorer.destroy()
-        create_file_explorer(self)
+        self.file_explorer.create_file_explorer()
 
     def create_widgets(self):
         self.instructions_label = tk.Label(self, text="Input Instructions:")
@@ -47,12 +48,12 @@ class Application(tk.Frame):
                                                      command=lambda: self.move_output_to_input())
         # self.submit_button = tk.Button(self, text="Submit", command=self.submit)
 
-        self.instructions_label.grid(row=0, column=0)
-        self.code_label.grid(row=1, column=0)
-        self.instructions_text.grid(row=0, column=1)
-        self.code_text.grid(row=1, column=1)
-        self.output_code_label.grid(row=0, column=2)
-        self.output_code_textbox.grid(row=1, column=2)
+        self.instructions_label.grid(row=1, column=0)
+        self.code_label.grid(row=2, column=0)
+        self.instructions_text.grid(row=1, column=1)
+        self.code_text.grid(row=2, column=1)
+        self.output_code_label.grid(row=1, column=2)
+        self.output_code_textbox.grid(row=2, column=2)
         # self.submit_button.grid(row=2, column=1)
 
     def key(self, event):

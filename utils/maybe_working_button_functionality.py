@@ -2,7 +2,6 @@ import os
 import re
 import tkinter
 import tkinter as tk
-from idlelib import colorizer as ic, percolator as ip
 from tkinter import ttk as ttk
 
 import subprocess
@@ -10,7 +9,9 @@ import tempfile
 
 import openai
 from .mylogger import MyLogger
-from pygments.lexers import guess_lexer
+from pygments.lexers import PythonLexer
+from pygments.formatters import HtmlFormatter,TerminalTrueColorFormatter
+from pygments import highlight
 
 from .git_functionality import init_git,pull_from_git,open_gitgub_descktop
 from .openai_utils import get_list_of_models_for_edit
@@ -48,7 +49,6 @@ def run_output(app):
 
 
 def load_script(app,file=None):
-    print("in load_script")
     if file is None:
         file = tk.filedialog.askopenfile(mode="r")
     if type(file) is str:
@@ -61,21 +61,11 @@ def load_script(app,file=None):
 
 
 def highlight_code(app):
-    language=detect_language(app.code_text.get("1.0", "end-1c"))
-    cdg_i = ic.ColorDelegator()
-    cdg_i.prog = re.compile(r'\b(?P<MYGROUP>tkinter)\b|' + ic.make_pat(), re.S)
-    cdg_i.idprog = re.compile(r'\s+(\w+)', re.S)
+    text = app.code_text.get("1.0", "end-1c")
+    highlighted_code = highlight(text, PythonLexer(), TerminalTrueColorFormatter())
+    app.code_text.delete("1.0", "end-1c")
+    app.code_text.insert("1.0", highlighted_code)
 
-    cdg_i.tagdefs['MYGROUP'] = {'foreground': '#7F7F7F', 'background': '#FFFFFF'}
-
-    cdg_o = ic.ColorDelegator()
-    cdg_o.prog = re.compile(r'\b(?P<MYGROUP>tkinter)\b|' + ic.make_pat(), re.S)
-    cdg_o.idprog = re.compile(r'\s+(\w+)', re.S)
-
-    cdg_o.tagdefs['MYGROUP'] = {'foreground': '#7F7F7F', 'background': '#FFFFFF'}
-
-    ip.Percolator(app.code_text).insertfilter(cdg_i)
-    ip.Percolator(app.output_code_textbox).insertfilter(cdg_o)
 
 
 def create_file_explorer(app):
@@ -105,6 +95,7 @@ def create_file_explorer2(app):
             app.file_explorer.insert(dir, "end", dir + "/", text=".")
     app.file_explorer.bind("<Double-1>", lambda event: load_script(app, file=event.widget.item(event.widget.focus())["text"]))
     highlight_code(app)
+    app.code_text.bind("<KeyRelease>", lambda event: highlight_code(app))
 
 def refresh_file_explorer(app):
     create_file_explorer(app)
@@ -146,6 +137,3 @@ def move_output_to_input(app):
     app.code_text.delete(1.0, tk.END)
     app.code_text.insert(tk.END, app.output_code_textbox.get(1.0, tk.END))
 
-
-def detect_language(code):
-    return guess_lexer(code).name

@@ -2,86 +2,75 @@ import tkinter as tk
 import tkinter.filedialog
 
 from .button_functionality import create_slide_menu, save_result, \
-    create_file_explorer, highlight_code, move_output_to_input
-
+     move_output_to_input, generate_drop_down_list,  highlight_code,   create_file_explorer
+# from .maybe_working_button_functionality import highlight_code
+from .file_explorer import FileExplorer
 from .button_functionality import beyond_compare as compare_code
+from .buttons_panel import ButtonsPanel
 from .jupyter_notebook_utils import save_output_to_ipynb_notebook  # gets name and code
-from .openai_utils import get_list_of_models_for_edit, send_to_openai
+from .openai_utils import send_to_openai
+from .undo import Undo
 
+class Editor(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.master.grid_propagate(False)
+        self.create_widgets()
 
-def generate_drop_down_list(root):
-    models = get_list_of_models_for_edit()
-    variable = tk.StringVar(root)
-    variable.set(models[0])
+    def create_widgets(self):
+        self.instructions_label = tk.Label(self, text="Input Instructions:")
+        self.code_label = tk.Label(self, text="Input Code:")
+        self.instructions_text = tk.Text(self, width=100, height=10)
+        self.code_text = tk.Text(self, width=100, height=30)
+        self.output_code_textbox = tk.Text(self, width=100, height=30, state="disabled")
+        self.output_code_label = tk.Label(self, text="Output Code:")
 
-    w = tk.OptionMenu(root, variable, *models)
-    root.dropdown_list = w
-    return root
+        # self.instructions_label.grid(row=1, column=0)
+        # self.code_label.grid(row=2, column=0)
+        # self.instructions_text.grid(row=1, column=1)
+        # self.code_text.grid(row=2, column=1)
+        # self.output_code_label.grid(row=1, column=2)
+        # self.output_code_textbox.grid(row=2, column=2)
+        self.instructions_label.grid(row=1, column=0, sticky="nsew")
+        self.code_label.grid(row=2, column=0, sticky="nsew")
+        self.instructions_text.grid(row=1, column=1, sticky="nsew")
+        self.code_text.grid(row=2, column=1, sticky="nsew")
+        self.output_code_label.grid(row=1, column=2, sticky="nsew")
+        self.output_code_textbox.grid(row=2, column=2, sticky="nsew")
 
-
-class Undo:
-    def __init__(self):
-        self.states = []
-
-    def addState(self, state):
-        self.states.append(state)
-
-    def getState(self):
-        return self.states.pop()
 
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.pack()
-        self.create_widgets()
-        self.file_explorer = None
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
         self.grid_columnconfigure(3, weight=1)
         self.grid_rowconfigure(1, weight=1)
+
+        self.buttons_panel = ButtonsPanel(self)
+        self.file_explorer = FileExplorer(self)
+        self.editor = Editor(self.master)
         create_slide_menu(self)
         generate_drop_down_list(self)
-        self.dropdown_list.grid(row=2, column=0)
+        self.dropdown_list.grid(row=0, column=0, sticky="nsew")
         self.bind('<Shift-Return>', self.submit)
         self.undo = Undo()
-        create_file_explorer(self)
+        self.file_explorer.create_file_explorer()
         highlight_code(self)
+        # self.code_text.bind("<KeyRelease>", lambda event: highlight_code(self))
 
     def update_file_explorer(self, event):
-        self.file_explorer.destroy()
-        create_file_explorer(self)
+        self.file_explorer.create_file_explorer(self)
 
-    def create_widgets(self):
-        self.instructions_label = tk.Label(self, text="Input Instructions:")
-        self.code_label = tk.Label(self, text="Input Code:")
-        self.instructions_text = tk.Text(self, width=100, height=10)
-        self.instructions_text.bind('<Key>', self.key)
-        self.code_text = tk.Text(self, width=100, height=30)
-        self.output_code_textbox = tk.Text(self, width=100, height=30, state="disabled")
-        self.output_code_label = tk.Label(self, text="Output Code:")
+
         self.move_output_to_input_button = tk.Button(self, text="Move Output to Input",
-                                                     command=lambda: move_output_to_input(self))
-        self.submit_button = tk.Button(self, text="Submit", command=self.submit)
-        self.save_result_button = tk.Button(self, text="Save Result to File", command=lambda: save_result(self))
-        self.save_result_to_notebook_button = tk.Button(self, text="Save Result to Notebook",
-                                                        command=self.save_result_to_notebook)
-        self.compare_code_button = tk.Button(self, text="Compare Code", command=lambda: compare_code(self))
-        self.compare_code_button.grid(row=2, column=3)
+                                                     command=lambda: self.move_output_to_input())
 
-        self.instructions_label.grid(row=0, column=0)
-        self.code_label.grid(row=1, column=0)
-        self.instructions_text.grid(row=0, column=1)
-        self.code_text.grid(row=1, column=1)
-        self.output_code_label.grid(row=0, column=2)
-        self.output_code_textbox.grid(row=1, column=2)
-        self.submit_button.grid(row=2, column=1)
-        self.save_result_button.grid(row=2, column=2)
 
-        self.move_output_to_input_button.grid(row=2, column=3)
-        self.save_result_to_notebook_button.grid(row=3, column=3)
-        self.move_output_to_input_button.grid(row=3, column=2)
+
 
     def key(self, event):
         if event.keysym == 'z' and event.state == 4:
@@ -100,5 +89,10 @@ class Application(tk.Frame):
                                                           ("jupyter notebooks", "*.ipynb"), ("all files", "*.*")))
         save_output_to_ipynb_notebook(notebook_name, self.output_code_textbox.get(1.0, tk.END))
 
+    def move_output_to_input(self):
+        self.code_text.delete(1.0, tk.END)
+        self.code_text.insert(tk.END, self.output_code_textbox.get(1.0, tk.END))
+
     def submit(self, event=None):
-        send_to_openai(self)
+        print("hit")
+        # send_to_openai(self)

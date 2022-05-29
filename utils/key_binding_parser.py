@@ -2,26 +2,7 @@ import tkinter as tk
 import re
 import os
 
-class ShortcutKeyBinder:
-   def __init__(self, file_path):
-      self.config = YAMLConfig(file_path, required_configs=['shortcuts'])
-      self.config.load()
-
-   def get_shortcut_command(self, shortcut):
-      return self.config.get('shortcuts')[shortcut]
-
-   def get_shortcuts(self):
-      return self.config.get('shortcuts').keys()
-
-   def add_shortcut(self, shortcut, command):
-      shortcuts = self.config.get('shortcuts')
-      shortcuts[shortcut] = command
-      self.config.export({'shortcuts': shortcuts})
-
-   def remove_shortcut(self, shortcut):
-      shortcuts = self.config.get('shortcuts')
-      del shortcuts[shortcut]
-      self.config.export({'shortcuts': shortcuts})
+from devince_codex_1.SW_IDE.utils.shortcuts_window import ShortcutKeyBinder
 
 
 def read_shortcut_keys(app_filename):
@@ -36,9 +17,11 @@ def read_shortcut_keys(app_filename):
 
     key_bindings = {}
     for line in lines:
-        if 'bind' in line:
+        if '.bind' in line:
+            print(line)
             key_bindings.update(parse_line(line))
     return key_bindings
+
 
 def parse_line(line):
     """
@@ -46,11 +29,16 @@ def parse_line(line):
     :param line:
     :return:
     """
-    key = re.search(r'<(.*)>', line).group(1)
-    command = re.search(r'\((.*)\)', line).group(1)
-    return {key: command}
+    key_match = re.search(r'<(.*)>', line)
+    command_match = re.search(r'\(.*,(.*)\)', line)
+    if key_match and command_match:
+        key = key_match.group(1)
+        command = command_match.group(1)
+        return {key: command}
+    else:
+        return {}
 
-    return key_bindings
+
 def read_shortcut_keys_from_folder(folder_path):
     """
     This method gets a folder path and iterate over all the files in the folder and subfolders
@@ -66,7 +54,6 @@ def read_shortcut_keys_from_folder(folder_path):
                 shortcut_keys = read_shortcut_keys(file_path)
                 for shortcut, command in shortcut_keys.items():
                     shortcut_key_binder.add_shortcut(shortcut, command)
-
 
 
 if __name__ == '__main__':

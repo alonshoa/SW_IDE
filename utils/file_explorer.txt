@@ -1,0 +1,17 @@
+import os
+import tkinter as tk
+from tkinter import ttk
+
+class FileExplorer(tk.Frame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.file_explorer = ttk.Treeview(self)
+        self.file_explorer.grid(row=1, column=0)
+        self.file_explorer.insert("", "end", ".", text=".", open=True)
+        for file in os.listdir():
+            self.file_explorer.insert("", "end", file, text=file)
+            if os.path.isdir(file):
+                for sub in os.listdir(file):
+                    self.file_explorer.insert(file, "end", file + "/"+sub, text=file + "/"+sub)
+
+        self.file_explorer.bind("<Double-1>", lambda event: load_script(app, file=event.widget.item(event.widget.focus())["text"]))

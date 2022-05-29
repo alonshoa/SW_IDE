@@ -16,7 +16,7 @@ class ShortcutKeyBinder:
 
    def add_shortcut(self, shortcut, command):
       shortcuts = self.config.get('shortcuts')
-      shortcuts[shortcut] = command
+      shortcuts[shortcut.strip()] = command.strip()
       self.config.export({'shortcuts': shortcuts})
 
    def remove_shortcut(self, shortcut):
