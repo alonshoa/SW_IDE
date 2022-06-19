@@ -38,13 +38,29 @@ def generate_drop_down_list(root):
     return root
 
 
-def send_to_openai(app):
-    instructions = app.instructions_text.get("1.0", "end-1c")
-    code = app.code_text.get("1.0", "end-1c")
+def send_to_openai(instructions,code):
+    # instructions = app.instructions_text.get("1.0", "end-1c")
+    # code = app.code_text.get("1.0", "end-1c")
     logger.log_info(['the instructions and the code',instructions,code])
     response = get_response(instructions, code)
     logger.log_info(f'the response - {response}')
+    logger.log_info(f'the outcode- {response["choices"][0]["text"]}')
+    return response["choices"][0]["text"]
+    # app.output_code_textbox.config(state="normal")
+    # app.output_code_textbox.delete("1.0", "end")
+    # app.output_code_textbox.insert("1.0", response["choices"][0]["text"])
+    # app.output_code_textbox.config(state="disabled")
+
+def send_to_openai_app(app):
+    instructions = app.instructions_text.get("1.0", "end-1c")
+    code = app.code_text.get("1.0", "end-1c")
+    logger.log_info(['the instructions and the code', instructions, code])
+    response = get_response(instructions, code)
+    logger.log_info(f'the response - {response}')
+    logger.log_info(f'the outcode- {response["choices"][0]["text"]}')
+    # return response
     app.output_code_textbox.config(state="normal")
     app.output_code_textbox.delete("1.0", "end")
     app.output_code_textbox.insert("1.0", response["choices"][0]["text"])
     app.output_code_textbox.config(state="disabled")
+

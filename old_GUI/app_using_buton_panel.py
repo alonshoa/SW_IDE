@@ -6,9 +6,9 @@ from .button_functionality import create_slide_menu, save_result, \
 
 from .button_functionality import beyond_compare as compare_code
 from .buttons_panel import ButtonsPanel
-from .jupyter_notebook_utils import save_output_to_ipynb_notebook  # gets name and code
-from .openai_utils import send_to_openai
-from .undo import Undo
+from devince_codex_1.SW_IDE.utils.jupyter_notebook_utils import save_output_to_ipynb_notebook  # gets name and code
+from devince_codex_1.SW_IDE.utils.openai_utils import send_to_openai
+from devince_codex_1.SW_IDE.utils.undo import Undo
 
 
 class Application(tk.Frame):
