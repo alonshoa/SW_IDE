@@ -1,14 +1,16 @@
 import tkinter as tk
 import tkinter.filedialog
 
-from .button_functionality import create_slide_menu, save_result, \
-    create_file_explorer, highlight_code, generate_drop_down_list
+# from .button_functionality import create_slide_menu, save_result, \
+#     create_file_explorer, highlight_code, generate_drop_down_list
 
-from .button_functionality import beyond_compare as compare_code
+# from .button_functionality import beyond_compare as compare_code
 from .buttons_panel import ButtonsPanel
 from devince_codex_1.SW_IDE.utils.jupyter_notebook_utils import save_output_to_ipynb_notebook  # gets name and code
 from devince_codex_1.SW_IDE.utils.openai_utils import send_to_openai
 from devince_codex_1.SW_IDE.utils.undo import Undo
+from ..utils.button_functionality import create_slide_menu, generate_drop_down_list, create_file_explorer, \
+    highlight_code
 
 
 class Application(tk.Frame):

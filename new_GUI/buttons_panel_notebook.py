@@ -1,9 +1,25 @@
+import os
 import pdb
+import threading
+import time
 import tkinter as tk
+from tkinter import messagebox
+from tkinter import ttk
 
 from devince_codex_1.SW_IDE.utils.button_functionality_generelized import beyond_compare as compare_code
 from devince_codex_1.SW_IDE.utils.button_functionality_generelized import save_result, move_output_to_input
 from devince_codex_1.SW_IDE.utils.openai_utils import send_to_openai
+from devince_codex_1.SW_IDE.utils.feedback_window import Feedback
+
+
+def get_all_templates():
+    return [t for t in os.listdir(os.path.join(os.getcwd(),'templates')) if t.endswith('.tmlt')]
+
+
+
+def get_template_code(template_name):
+    with open(os.path.join(os.getcwd(),'templates',template_name),'r') as f:
+        return f.read()
 
 
 class ButtonsPanel(tk.Frame):
@@ -31,9 +47,6 @@ class ButtonsPanel(tk.Frame):
                                                               command=self.save_output_to_ipynb_notebook)
         self.save_output_to_ipynb_notebook_button.grid(row=0, column=2, sticky=tk.NSEW)
 
-        # self.get_list_of_models_for_edit_button = tk.Button(self, text="Get List of Models for Edit",
-        #                                                     command=get_list_of_models_for_edit)
-        # self.get_list_of_models_for_edit_button.grid(row=6, column=0, sticky=tk.NSEW)
         self.move_output_to_input = tk.Button(self, text="Move output to input",
                               command=lambda : move_output_to_input(self.master
                                                                     ))
@@ -43,9 +56,19 @@ class ButtonsPanel(tk.Frame):
                                                command=lambda :self.send_to_openai(self.master))
         self.debug_button = tk.Button(self, text="Debug",
                                                command=lambda :pdb.set_trace())
+        self.template_dropdown = ttk.Combobox(self, values=get_all_templates())
+        self.template_dropdown.grid(row=0, column=6, sticky=tk.NSEW)
+
         self.debug_button.grid(row=8, column=0, sticky=tk.NSEW)
         self.send_to_openai_button.grid(row=0, column=4, sticky=tk.NSEW)
+        self.use_template_button = tk.Button(self, text="Use Template",
+                                               command=lambda :self.use_template(self.master))
+        self.save_as_template_button = tk.Button(self, text="Save As Template",
+                                                 command=lambda: self.save_as_template(self.master))
 
+        self.save_as_template_button.grid(row=0, column=8, sticky=tk.NSEW)
+
+        self.use_template_button.grid(row=0, column=7, sticky=tk.NSEW)
 
         self.quit = tk.Button(self, text="QUIT", fg="red",
                               command=self.master.destroy)
@@ -54,8 +77,26 @@ class ButtonsPanel(tk.Frame):
     def save_output_to_ipynb_notebook(self,event=None):
         self.master.save_result_to_notebook()
 
+    def use_template(self, master):
+        template_name = self.template_dropdown.get()
+        template_code = get_template_code(template_name)
+        master.set_code(template_code)
+
+    def save_as_template(self, master):
+        template_name = self.template_dropdown.get()
+        template_code = master.get_code()
+        with open(os.path.join(os.getcwd(),'templates',template_name),'w') as f:
+            f.write(template_code)
+
     def send_to_openai(self, master):
         output_code = send_to_openai(master.get_instructions(),master.get_code())
+        def wait_for_openai_and_pop_up_message():
+            time.sleep(15)
+            Feedback()
+
+            # messagebox.showinfo("Feedback", "OpenAI is done")
+
+        threading.Thread(target=wait_for_openai_and_pop_up_message).start()
         self.master.set_output_code(output_code)
 
 

@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 # from devince_codex_1.SW_IDE.utils.button_functionality import highlight_code
+from devince_codex_1.SW_IDE.new_GUI.breakable_textarea import BreakableTextarea, BreakableTextareaWithLinenumbers
+from devince_codex_1.SW_IDE.text_areas_with_linenumber import LinedText
 from devince_codex_1.SW_IDE.utils.button_functionality_generelized import highlight_code
 
 
@@ -30,12 +32,17 @@ class ThreeTextAreas(tk.Frame):
         self.lblA = tk.Label(self, text="Instructions")
         self.lblB = tk.Label(self, text="Code")
         self.lblC = tk.Label(self, text="Output Code")
+        # self.lblA = tk.Label(self, text="Instructions")
+        # self.lblB = tk.Label(self, text="Code")
+        # self.lblC = tk.Label(self, text="Output Code")
 
         self.areaA = tk.Text(self)
-        self.areaB = tk.Text(self)
-        self.areaC = tk.Text(self)
+        # self.areaB = tk.Text(self)
+        self.areaB = BreakableTextarea(self)#tk.Text(self)
+        self.areaC = BreakableTextarea(self)#tk.Text(self)
 
-        highlight_code(self.areaB, self.areaC)
+
+        highlight_code(self.areaB.text, self.areaC.text)
         self.areaB.bind("<<Modified>>", self.onCodeModified)
 
         self.lblA.grid(sticky=tk.W, pady=4, padx=5, row=0, column=0)
@@ -58,8 +65,6 @@ class ThreeTextAreas(tk.Frame):
 
     def get_instructions(self):
         return self.areaA.get(1.0, tk.END)
-    # def highlight_code(self):
-    #     highlight_code()
 
     def set_output_code(self,content):
         self.areaC.insert(1.0, content)
@@ -67,13 +72,14 @@ class ThreeTextAreas(tk.Frame):
     def get_output_code(self):
         return self.areaC.get(1.0, tk.END)
 
+
 def main():
     root = tk.Tk()
 
-    def onCodeModifiedEvent(event):
+    def on_code_modified_event(event):
         print("modified")
 
-    ex = ThreeTextAreas(root, "test", onCodeModifiedEvent)
+    ex = ThreeTextAreas(root, "test", on_code_modified_event)
     root.geometry("600x250+300+300")
     root.mainloop()
 

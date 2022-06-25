@@ -12,10 +12,11 @@ class EditorNotebook(tk.Frame):
         self.modified = []
         self.tab_name_child = {}
         self.notebook = ttk.Notebook(self)
+        self.notebook.enable_traversal()
         self.file_names = []
         self.notebook.pack(fill=tk.BOTH, expand=True)
 
-    def add_file(self, file_name= None,content=None) :
+    def add_file(self, file_name=None, content=None):
         if file_name is None:
             file_name = filedialog.askopenfilename()
         if file_name in self.file_names:
@@ -44,21 +45,27 @@ class EditorNotebook(tk.Frame):
         self.notebook.tab(frame, text=self.file_names[self.notebook.index(frame)].split('/')[-1] + '*')
 
     def save(self, frame):
-        file_name = self.notebook.tab(frame, "text").replace('*','')
+        file_name = self.notebook.tab(frame, "text").replace('*', '')
         if file_name == 'New File':
             file_name = filedialog.asksaveasfilename()
         with open(file_name, 'w') as f:
             f.write(self.get_output_code())
-
+        print("Saved file: " + file_name)
+        self.notebook.tab(frame, text=self.file_names[self.notebook.index(frame)].split('/')[-1])
 
     def get_instructions(self):
-        return self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*','')].get_instructions()
+        return self.tab_name_child[
+            self.notebook.tab(self.notebook.select(), "text").replace('*', '')].get_instructions()
 
     def get_code(self):
-        return self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*','')].get_code()
+        return self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*', '')].get_code()
 
     def get_output_code(self):
-        return self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*','')].get_output_code()
+        return self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*', '')].get_output_code()
 
-    def set_output_code(self,output_code):
-        self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*', '')].set_output_code(output_code)
+    def set_output_code(self, output_code):
+        self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*', '')].set_output_code(
+            output_code)
+
+    def set_code(self, code):
+        self.tab_name_child[self.notebook.tab(self.notebook.select(), "text").replace('*', '')].set_code(code)

@@ -1,8 +1,6 @@
-import os
 import tkinter as tk
 from tkinter import messagebox, filedialog, Menu
 
-from devince_codex_1.SW_IDE.utils.git_functionality import open_gitgub_descktop
 from .buttons_panel_notebook import ButtonsPanel
 from .tk_notebook import EditorNotebook
 # from buttons_panel import ButtonsPanel
@@ -23,7 +21,6 @@ class NotebookApplication(tk.Frame):
         self.parent.bind("<Control-o>", self.open_file)
         self.parent.bind("<Control-s>", self.save_file)
         self.parent.bind("<Control-q>", self.on_close)
-        self.parent.bind("<Control-w>", self.close_file)
 
     def create_menu(self):
         self.menu = Menu(self.parent)
@@ -58,9 +55,6 @@ class NotebookApplication(tk.Frame):
         self.help_menu = Menu(self.menu)
         self.menu.add_cascade(label="Help", menu=self.help_menu)
         self.help_menu.add_command(label="About", command=self.about)
-        self.git_menu = Menu(self.menu)
-        self.menu.add_cascade(label="Git", menu=self.git_menu)
-        self.git_menu.add_command(label="GitHub Desktop", command=self.open_github_desktop)
 
     def undo(self):
         pass
@@ -95,9 +89,7 @@ class NotebookApplication(tk.Frame):
     def about(self):
         pass
 
-    def open_github_desktop(self):
-        open_gitgub_descktop(os.getcwd())
-        # pass
+        self.parent.bind("<Control-w>", self.close_file)
 
     def new_file(self, event=None):
         self.notebook.add_file(file_name="New File")
@@ -128,9 +120,6 @@ class NotebookApplication(tk.Frame):
 
     def get_code(self):
         return self.notebook.get_code()
-
-    def set_code(self, code):
-        self.notebook.set_code(code)
 
     def get_output_code(self):
         return self.notebook.get_output_code()
