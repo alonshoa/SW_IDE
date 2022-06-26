@@ -57,7 +57,12 @@ class ThreeTextAreas(tk.Frame):
         for callback in self.onCodeModifiedEvents:
             callback(event)
 
-    def set_code(self, content):
+    def get_filename(self):
+        return self.filename
+
+    def set_code(self, content, delete=True):
+        if delete:
+            self.areaB.delete(1.0, tk.END)
         self.areaB.insert(1.0, content)
 
     def get_code(self):
@@ -66,7 +71,9 @@ class ThreeTextAreas(tk.Frame):
     def get_instructions(self):
         return self.areaA.get(1.0, tk.END)
 
-    def set_output_code(self,content):
+    def set_output_code(self,content, delete=True):
+        if delete:
+            self.areaC.delete(1.0, tk.END)
         self.areaC.insert(1.0, content)
 
     def get_output_code(self):
@@ -86,3 +93,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

@@ -46,6 +46,7 @@ class EditorNotebook(tk.Frame):
 
     def save(self, frame):
         file_name = self.notebook.tab(frame, "text").replace('*', '')
+        # file_name = frame.get_filename()# self.notebook.tab(frame, "text").replace('*', '')
         if file_name == 'New File':
             file_name = filedialog.asksaveasfilename()
         with open(file_name, 'w') as f:
