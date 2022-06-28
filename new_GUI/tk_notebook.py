@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
-from devince_codex_1.SW_IDE.new_GUI.text_areas import ThreeTextAreas
+from new_GUI.text_areas import ThreeTextAreas
 
 
 class EditorNotebook(tk.Frame):

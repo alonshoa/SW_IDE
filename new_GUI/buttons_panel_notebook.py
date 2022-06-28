@@ -6,10 +6,10 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 
-from devince_codex_1.SW_IDE.utils.button_functionality_generelized import beyond_compare as compare_code
-from devince_codex_1.SW_IDE.utils.button_functionality_generelized import save_result, move_output_to_input
-from devince_codex_1.SW_IDE.utils.openai_utils import send_to_openai
-from devince_codex_1.SW_IDE.utils.feedback_window import Feedback
+from utils.button_functionality_generelized import beyond_compare as compare_code
+from utils.button_functionality_generelized import save_result, move_output_to_input
+from utils.openai_utils import send_to_openai
+from utils.feedback_window import Feedback
 
 
 def get_all_templates():

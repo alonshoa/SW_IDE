@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 # from devince_codex_1.SW_IDE.utils.button_functionality import highlight_code
-from devince_codex_1.SW_IDE.new_GUI.breakable_textarea import BreakableTextarea, BreakableTextareaWithLinenumbers
-from devince_codex_1.SW_IDE.text_areas_with_linenumber import LinedText
-from devince_codex_1.SW_IDE.utils.button_functionality_generelized import highlight_code
+from new_GUI.breakable_textarea import BreakableTextarea, BreakableTextareaWithLinenumbers
+from text_areas_with_linenumber import LinedText
+from utils.button_functionality_generelized import highlight_code
 
 
 class ThreeTextAreas(tk.Frame):

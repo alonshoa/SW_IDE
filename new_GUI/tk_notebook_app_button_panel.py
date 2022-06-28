@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 from tkinter import messagebox, filedialog, Menu
 
-from devince_codex_1.SW_IDE.utils.git_functionality import open_gitgub_descktop
+from utils.git_functionality import open_gitgub_descktop
 from .buttons_panel_notebook import ButtonsPanel
 from .tk_notebook import EditorNotebook
 # from buttons_panel import ButtonsPanel
