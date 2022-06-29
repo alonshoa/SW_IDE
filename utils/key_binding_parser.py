@@ -53,7 +53,7 @@ def parse_line(line):
     command = re.search(r'\((.*)\)', line).group(1)
     return {key: command}
 
-    return key_bindings
+
 def read_shortcut_keys_from_folder(folder_path):
     """
     This method gets a folder path and iterate over all the files in the folder and subfolders
