@@ -9,7 +9,7 @@ from tkinter import ttk
 from utils.button_functionality_generelized import beyond_compare as compare_code
 from utils.button_functionality_generelized import save_result, move_output_to_input
 from utils.openai_utils import send_to_openai
-from utils.feedback_window import Feedback
+from utils.feedback_window import FeedbackWindow
 
 
 def get_all_templates():
@@ -92,9 +92,9 @@ class ButtonsPanel(tk.Frame):
         output_code = send_to_openai(master.get_instructions(),master.get_code())
         def wait_for_openai_and_pop_up_message():
             time.sleep(15)
-            Feedback()
+            FeedbackWindow()
 
-            # messagebox.showinfo("Feedback", "OpenAI is done")
+            # messagebox.showinfo("FeedbackWindow", "OpenAI is done")
 
         threading.Thread(target=wait_for_openai_and_pop_up_message).start()
         self.master.set_output_code(output_code)

@@ -3,7 +3,6 @@ future~=0.18.2
 pygments~=2.7.2
 matplotlib~=3.5.2
 numpy~=1.23.0
-
 pandas~=1.4.3
 openai~=0.20.0
 ttkthemes~=3.2.2

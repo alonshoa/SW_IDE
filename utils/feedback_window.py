@@ -1,10 +1,10 @@
 import tkinter as tk
 from .mylogger import MyLogger
 
-class Feedback(tk.Toplevel):
+class FeedbackWindow(tk.Toplevel):
     def __init__(self):
         tk.Toplevel.__init__(self)
-        self.title("Feedback")
+        self.title("FeedbackWindow")
         self.geometry("300x200")
         self.create_widgets()
         self.logger = MyLogger()
@@ -49,11 +49,11 @@ class Main(tk.Tk):
         self.create_widgets()
 
     def create_widgets(self):
-        self.feedback = tk.Button(self, text="Feedback", command=self.feedback)
+        self.feedback = tk.Button(self, text="FeedbackWindow", command=self.feedback)
         self.feedback.pack(side="top")
 
     def feedback(self):
-        feedback = Feedback()
+        feedback = FeedbackWindow()
 
 
 if __name__ == "__main__":

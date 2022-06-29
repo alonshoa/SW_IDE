@@ -2,6 +2,9 @@ import tkinter as tk
 import re
 import os
 
+from utils.YAMLconfig import YAMLConfig
+
+
 class ShortcutKeyBinder:
    def __init__(self, file_path):
       self.config = YAMLConfig(file_path, required_configs=['shortcuts'])
