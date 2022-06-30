@@ -2,8 +2,8 @@ import os
 import tkinter as tk
 from tkinter import messagebox, filedialog, Menu
 
-from new_GUI.notebook_file_explorer import FileExplorer
-from utils.git_functionality import open_gitgub_descktop
+from src.new_GUI.notebook_file_explorer import FileExplorer
+from src.utils.git_functionality import open_gitgub_descktop
 from .buttons_panel_notebook import ButtonsPanel
 from .tk_notebook import EditorNotebook
 

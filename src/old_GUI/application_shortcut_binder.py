@@ -2,7 +2,7 @@ import tkinter as tk
 import yaml
 import sys
 
-from devince_codex_1.SW_IDE.utils.YAMLconfig import YAMLConfig
+from src.utils.YAMLconfig import YAMLConfig
 
 
 class ShortcutKeyBinder:

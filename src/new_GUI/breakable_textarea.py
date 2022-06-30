@@ -2,7 +2,7 @@ import sys
 import tkinter as tk
 import pdb
 
-from text_areas_with_linenumber import LinedText
+from .text_areas_with_linenumber1 import LinedText
 
 
 class DebuggerAdapter(object):

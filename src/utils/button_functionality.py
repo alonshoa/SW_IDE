@@ -107,7 +107,7 @@ def create_file_explorer2(app):
     app.file_explorer = ttk.Treeview(app)
     app.file_explorer.grid(row=1, column=0)
     app.file_explorer.insert("", "end", ".", text=".", open=True)
-    for root, dirs, files in os.walk("."):
+    for root, dirs, files in os.walk(""):
         for file in files:
             app.file_explorer.insert("", "end", file, text=file)
         for dir in dirs:

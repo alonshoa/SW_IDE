@@ -1,8 +1,7 @@
-import tkinter as tk
 import re
 import os
 
-from utils.YAMLconfig import YAMLConfig
+from src.utils.YAMLconfig import YAMLConfig
 
 
 class ShortcutKeyBinder:

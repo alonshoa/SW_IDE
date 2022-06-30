@@ -3,13 +3,12 @@ import pdb
 import threading
 import time
 import tkinter as tk
-from tkinter import messagebox
 from tkinter import ttk
 
-from utils.button_functionality_generelized import beyond_compare as compare_code
-from utils.button_functionality_generelized import save_result, move_output_to_input
-from utils.openai_utils import send_to_openai
-from utils.feedback_window import FeedbackWindow
+from src.utils.button_functionality_generelized import beyond_compare as compare_code
+from src.utils.button_functionality_generelized import save_result, move_output_to_input
+from src.utils.openai_utils import send_to_openai
+from src.utils.feedback_window import FeedbackWindow
 
 
 def get_all_templates():

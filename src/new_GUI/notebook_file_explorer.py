@@ -24,6 +24,10 @@ class File:
         return hash((self.name, self.path))
 
 
+def get_file_size(file_path):
+    return os.path.getsize(file_path)
+
+
 class FileExplorer(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -67,9 +71,9 @@ class FileExplorer(tk.Frame):
             else:
                 os.startfile(file_path)
 
-    def populate_file_list(self):
+    def populate_file_list(self, file_path=os.getcwd()):
         self.tree.delete(*self.tree.get_children())
-        self.populate_tree(os.getcwd())
+        self.populate_tree(file_path)
 
     def populate_tree(self, root_path):
         self.tree.insert("", "end", root_path, text=root_path, open=True)
@@ -78,13 +82,12 @@ class FileExplorer(tk.Frame):
             if os.path.isdir(file):
                 for sub in os.listdir(file):
                     file_sub = file + "/" + sub
-                    self.tree.insert(file, "end", file_sub, values=(file_sub, "file", self.get_file_size(file_sub)), text=file_sub)
+                    self.tree.insert(file, "end", file_sub, values=(file_sub, "file", get_file_size(file_sub)),
+                                     text=file_sub)
 
-    def get_file_size(self, file_path):
-        return os.path.getsize(file_path)
 
-root = tk.Tk()
-app = FileExplorer(master=root)
-app.populate_file_list()
-app.mainloop()
-
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = FileExplorer(master=root)
+    app.populate_file_list()
+    app.mainloop()

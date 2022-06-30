@@ -55,6 +55,7 @@ class CustomText(tk.Text):
         return result
 
 
+
 class LinedText(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
@@ -69,6 +70,11 @@ class LinedText(tk.Frame):
     def _on_change(self, event):
         self.linenumbers.redraw()
 
+    def insert(self,*args):
+        self.text.insert(*args)
+
+    def get(self,*args):
+        self.text.get(*args)
 
 class ThreeTextAreas(tk.Frame):
     def __init__(self, parent, filename):
