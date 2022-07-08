@@ -24,22 +24,28 @@ class FeedbackWindow(tk.Toplevel):
     def very_bad(self):
         print("very bad")
         self.logger.info("very bad")
+        self.destroy()
 
     def bad(self):
         print("bad")
+        self.destroy()
         self.logger.info(" bad")
+        self.destroy()
 
     def ok(self):
         print("ok")
         self.logger.info("ok")
+        self.destroy()
 
     def good(self):
         print("good")
         self.logger.info("good")
+        self.destroy()
 
     def excellent(self):
         print("excellent")
         self.logger.info("excellent")
+        self.destroy()
 
 class Main(tk.Tk):
     def __init__(self):
@@ -59,3 +65,4 @@ class Main(tk.Tk):
 if __name__ == "__main__":
     app = Main()
     app.mainloop()
+

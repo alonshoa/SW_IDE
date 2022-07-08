@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
-# from src.new_GUI.text_areas import ThreeTextAreas
-from src.new_GUI.text_areas_with_linenumber import ThreeTextAreas
+from src.new_GUI.text_areas import ThreeTextAreas
+# from src.new_GUI.text_areas_with_linenumber import ThreeTextAreas
 
 
 class EditorNotebook(tk.Frame):

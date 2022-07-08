@@ -2,6 +2,7 @@ import tkinter as tk
 
 # from devince_codex_1.SW_IDE.utils.button_functionality import highlight_code
 from src.new_GUI.breakable_textarea import BreakableTextarea
+from src.new_GUI.text_areas_with_linenumber import LinedText
 from src.utils.button_functionality_generelized import highlight_code
 
 
@@ -30,14 +31,10 @@ class ThreeTextAreas(tk.Frame):
         self.lblA = tk.Label(self, text="Instructions")
         self.lblB = tk.Label(self, text="Code")
         self.lblC = tk.Label(self, text="Output Code")
-        # self.lblA = tk.Label(self, text="Instructions")
-        # self.lblB = tk.Label(self, text="Code")
-        # self.lblC = tk.Label(self, text="Output Code")
 
         self.areaA = tk.Text(self)
-        # self.areaB = tk.Text(self)
-        self.areaB = BreakableTextarea(self)#tk.Text(self)
-        self.areaC = BreakableTextarea(self)#tk.Text(self)
+        self.areaB = LinedText(self)
+        self.areaC = LinedText(self)
 
 
         highlight_code(self.areaB.text, self.areaC.text)
@@ -47,6 +44,7 @@ class ThreeTextAreas(tk.Frame):
         self.lblB.grid(sticky=tk.W, pady=4, padx=5, row=0, column=1)
         self.lblC.grid(sticky=tk.W, pady=4, padx=5, row=0, column=2)
 
+        # self.linenumbers.grid(row=1, column=3, columnspan=1, rowspan=4, padx=5, sticky=tk.E + tk.W + tk.S + tk.N)
         self.areaA.grid(row=1, column=0, columnspan=1, rowspan=4, padx=5, sticky=tk.E + tk.W + tk.S + tk.N)
         self.areaB.grid(row=1, column=1, columnspan=1, rowspan=4, padx=5, sticky=tk.E + tk.W + tk.S + tk.N)
         self.areaC.grid(row=1, column=2, columnspan=1, rowspan=4, padx=5, sticky=tk.E + tk.W + tk.S + tk.N)
@@ -55,12 +53,8 @@ class ThreeTextAreas(tk.Frame):
         for callback in self.onCodeModifiedEvents:
             callback(event)
 
-    def get_filename(self):
-        return self.filename
-
-    def set_code(self, content, delete=True):
-        if delete:
-            self.areaB.delete(1.0, tk.END)
+    def set_code(self, content):
+        self.areaB.delete(1.0, tk.END)
         self.areaB.insert(1.0, content)
 
     def get_code(self):
@@ -81,10 +75,10 @@ class ThreeTextAreas(tk.Frame):
 def main():
     root = tk.Tk()
 
-    def on_code_modified_event(event):
+    def onCodeModifiedEvent(event):
         print("modified")
 
-    ex = ThreeTextAreas(root, "test", on_code_modified_event)
+    ex = ThreeTextAreas(root, "test")
     root.geometry("600x250+300+300")
     root.mainloop()
 
