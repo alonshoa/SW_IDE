@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import font
 
 # from utils import highlight_code
+from src.utils.button_functionality_generelized import highlight_code
 
 
 class LineNumbers(tk.Canvas):
@@ -59,22 +60,28 @@ class CustomText(tk.Text):
 class LinedText(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self.text = CustomText(self)
+        self.text = tk.Text(self)
         self.linenumbers = LineNumbers(self, width=30)
         self.linenumbers.attach(self.text)
-        self.text.bind("<<Change>>", self._on_change)
+        self.text.bind("<<Modified>>", self._on_change)
         self.text.bind("<Configure>", self._on_change)
         self.linenumbers.pack(side="left", fill="y")
         self.text.pack(side="right", fill="both", expand=True)
 
     def _on_change(self, event):
+        print("modified")
         self.linenumbers.redraw()
 
     def insert(self,*args):
         self.text.insert(*args)
 
     def get(self,*args):
-        self.text.get(*args)
+        return self.text.get(*args)
+
+    def delete(self, param, END):
+        self.text.delete(param,END)
+
+
 
 class ThreeTextAreas(tk.Frame):
     def __init__(self, parent, filename):
@@ -115,7 +122,7 @@ class ThreeTextAreas(tk.Frame):
         # self.areaB.bind("<Configure>", self._on_change)
         # self.areaC.bind("<Configure>", self._on_change)
 
-        # highlight_code(self.areaB, self.areaC)
+        highlight_code(self.areaB.text, self.areaC.text)
         self.areaB.bind("<<Modified>>", self.onCodeModified)
 
         self.lblA.grid(sticky=tk.W, pady=4, padx=5, row=0, column=0)
@@ -138,6 +145,7 @@ class ThreeTextAreas(tk.Frame):
         return self.areaB.get(1.0, tk.END)
 
     def get_instructions(self):
+        self.areaC.delete(1.0, tk.END)
         return self.areaA.get(1.0, tk.END)
 
     def set_output_code(self, content):
@@ -160,4 +168,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
 

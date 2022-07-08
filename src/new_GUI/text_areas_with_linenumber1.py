@@ -430,7 +430,7 @@ class CustomText(tk.Text):
 class LinedText(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self.text = CustomText(self)
+        self.text = tk.Text(self)
         self.linenumbers = LineNumbers(self, width=30)
         self.linenumbers.attach(self.text)
         self.text.bind("<<Change>>", self._on_change)

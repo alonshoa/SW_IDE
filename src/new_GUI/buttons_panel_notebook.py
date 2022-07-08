@@ -88,7 +88,9 @@ class ButtonsPanel(tk.Frame):
             f.write(template_code)
 
     def send_to_openai(self, master):
-        output_code = send_to_openai(master.get_instructions(),master.get_code())
+        code = master.get_code()
+        instructions = master.get_instructions()
+        output_code = send_to_openai(instructions, code)
         def wait_for_openai_and_pop_up_message():
             time.sleep(15)
             FeedbackWindow()
